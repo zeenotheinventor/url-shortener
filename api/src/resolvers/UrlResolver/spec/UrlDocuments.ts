@@ -1,6 +1,7 @@
 export const generateShortUrlDocument: string = `
 mutation ($input: GenerateShortUrlInput!){
     generateShortUrl(input: $input){
+      id
       shortUrl
       longUrl
     }
@@ -10,7 +11,9 @@ mutation ($input: GenerateShortUrlInput!){
 export const getUrlsDocument: string = `
   query{
     urls{
+      id
       longUrl
+      shortUrl
     }
   }
 `;
