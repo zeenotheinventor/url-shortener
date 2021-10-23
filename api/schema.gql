@@ -12,7 +12,7 @@ type Mutation {
 }
 
 type Query {
-  hello: String!
+  urls: [Url!]!
 }
 
 type Url {
