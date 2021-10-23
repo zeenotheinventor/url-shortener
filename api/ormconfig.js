@@ -5,11 +5,11 @@ module.exports = [
     database: "database.dev.url-shortener",
     synchronize: true,
     logging: true,
-    entities: ["src/entity/**/*.ts"],
+    entities: ["src/entities/**/*.ts"],
     migrations: ["src/migration/**/*.ts"],
     subscribers: ["src/subscriber/**/*.ts"],
     cli: {
-      entitiesDir: "src/entity",
+      entitiesDir: "src/entities",
       migrationsDir: "src/migration",
       subscribersDir: "src/subscriber"
     }
@@ -21,7 +21,7 @@ module.exports = [
     synchronize: true,
     logging: false,
     dropSchema: true,
-    entities: ["src/entity/**/*.ts"],
+    entities: ["src/entities/**/*.ts"],
   },
   {
     name: "production",
@@ -29,11 +29,11 @@ module.exports = [
     url: process.env.DATABASE_URL,
     synchronize: true, // switch this to false once you have the initial tables created and use migrations instead
     logging: false,
-    entities: ["dist/entity/**/*.js"],
+    entities: ["dist/entities/**/*.js"],
     migrations: ["dist/migration/**/*.js"],
     subscribers: ["dist/subscriber/**/*.js"],
     cli: {
-      entitiesDir: "dist/entity",
+      entitiesDir: "dist/entities",
       migrationsDir: "dist/migration",
       subscribersDir: "dist/subscriber"
     }

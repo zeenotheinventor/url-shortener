@@ -1,32 +1,54 @@
 import { ExecutionResult } from "graphql";
-import { Url } from "src/entities";
-import { fireGraphQLCall } from "src/testUtils";
+import { Url } from "../../../entities";
+import { fireGraphQLCall, createTestConnection } from "../../../testUtils";
+import { Connection } from "typeorm";
+import { GenerateShortUrlInput } from "../types";
+import { generateShortUrlDocument, getUrlsDocument } from "./UrlDocuments";
 
 describe("UrlResolver", () => {
+  let conn: Connection;
+  beforeAll(async () => {
+    conn = await createTestConnection();
+  });
+
+  afterAll(async () => {
+    await conn.close();
+  });
+
   const generateShortUrl = async (
     longUrl: string
   ): Promise<ExecutionResult> => {
+    const generateShortUrlInput: GenerateShortUrlInput = {
+      longUrl,
+    };
+
     return await fireGraphQLCall(generateShortUrlDocument, {
-      input: longUrl,
+      input: generateShortUrlInput,
     });
   };
 
-  it("creates a shortened 8 character URL", async () => {
+  it("creates a valid shortened URL", async () => {
     const longUrl: string = "https://www.dadamugamazino.com";
     const response: ExecutionResult = await generateShortUrl(longUrl);
 
     const expectedResponse: ExecutionResult = {
       data: {
         url: {
-          shortUrl: `${process.env.SHORTENER_DOMAIN}/abcdwxyz`,
           longUrl,
         },
       },
     };
 
+    const shortUrl: string = response.data?.generateShortUrl.shortUrl;
+    const shortUuid: string = shortUrl.split(
+      `${process.env.SHORTENER_DOMAIN}/`
+    )[1];
+
+    const matchAlphaNumeric: RegExp = /[a-z0-9]*$/;
+
+    expect(shortUuid).toMatch(matchAlphaNumeric);
     expect(response.errors).toBeUndefined();
-    expect(response).toEqual(expectedResponse);
-    expect(response.data?.url).toHaveLength(8);
+    expect(shortUuid).toHaveLength(8);
 
     const databaseResult = await Url.findOne(expectedResponse.data?.url);
     expect(databaseResult).toEqual(
@@ -41,7 +63,7 @@ describe("UrlResolver", () => {
       "https://primarybid.com/uk",
       "https://www.synthcity.io",
     ];
-    longUrls.forEach(async (url) => await generateShortUrl(url));
+    longUrls.forEach(async (longUrl) => await generateShortUrl(longUrl));
 
     // Retrieve all URLs
     const response: ExecutionResult = await fireGraphQLCall(getUrlsDocument);
