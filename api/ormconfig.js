@@ -1,8 +1,10 @@
 module.exports = [
   {
     name: "development",
-    type: "sqlite",
-    database: "database.dev.url-shortener",
+    type: "mongodb",
+    host: "localhost",
+    port: 27017,
+    database: "url-shortener",
     synchronize: true,
     logging: true,
     entities: ["src/entities/**/*.ts"],
@@ -16,26 +18,11 @@ module.exports = [
   },
   {
     name: "test",
-    type: "sqlite",
-    database: "database.test.url-shortener",
+    type: "mongodb",
+    database: "url-shortener-test",
     synchronize: true,
     logging: false,
     dropSchema: true,
     entities: ["src/entities/**/*.ts"],
-  },
-  {
-    name: "production",
-    type: "mongo",
-    url: process.env.DATABASE_URL,
-    synchronize: true, // switch this to false once you have the initial tables created and use migrations instead
-    logging: false,
-    entities: ["dist/entities/**/*.js"],
-    migrations: ["dist/migration/**/*.js"],
-    subscribers: ["dist/subscriber/**/*.js"],
-    cli: {
-      entitiesDir: "dist/entities",
-      migrationsDir: "dist/migration",
-      subscribersDir: "dist/subscriber"
-    }
   }
 ];

@@ -1,10 +1,10 @@
 import { Field, ObjectType } from "type-graphql";
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, ObjectIdColumn } from "typeorm";
 
 @ObjectType()
 @Entity()
 export class Url extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @ObjectIdColumn()
   @Field()
   id: string;
 

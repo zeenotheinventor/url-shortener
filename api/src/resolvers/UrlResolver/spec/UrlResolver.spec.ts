@@ -89,7 +89,7 @@ describe("UrlResolver", () => {
       expect(shortUuid).toHaveLength(8);
 
       const expectedDataEntry: DeepPartial<Url> = {
-        id: expect.any(String),
+        id: expect.anything(),
         longUrl,
         shortUrl,
       };
