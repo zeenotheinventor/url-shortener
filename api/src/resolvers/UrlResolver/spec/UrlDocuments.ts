@@ -8,6 +8,9 @@ mutation ($input: GenerateShortUrlInput!){
 `;
 
 export const getUrlsDocument: string = `
-
-
+  query{
+    urls{
+      longUrl
+    }
+  }
 `;

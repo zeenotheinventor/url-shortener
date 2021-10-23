@@ -1,5 +1,5 @@
 import { Url } from "../../entities";
-import { Arg, Mutation, Resolver } from "type-graphql";
+import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { DeepPartial } from "typeorm";
 import { GenerateShortUrlInput } from "./types";
 import { customAlphabet } from "nanoid";
@@ -21,5 +21,10 @@ export class UrlResolver {
     };
 
     return await Url.create(url).save();
+  }
+
+  @Query(() => [Url])
+  async urls() {
+    return await Url.find();
   }
 }

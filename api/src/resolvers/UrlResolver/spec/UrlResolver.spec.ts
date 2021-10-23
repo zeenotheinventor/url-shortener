@@ -1,7 +1,7 @@
 import { ExecutionResult } from "graphql";
 import { Url } from "../../../entities";
 import { fireGraphQLCall, createTestConnection } from "../../../testUtils";
-import { Connection } from "typeorm";
+import { Connection, DeepPartial } from "typeorm";
 import { GenerateShortUrlInput } from "../types";
 import { generateShortUrlDocument, getUrlsDocument } from "./UrlDocuments";
 
@@ -12,6 +12,7 @@ describe("UrlResolver", () => {
   });
 
   afterAll(async () => {
+    await Url.clear();
     await conn.close();
   });
 
@@ -28,21 +29,14 @@ describe("UrlResolver", () => {
   };
 
   it("creates a valid shortened URL", async () => {
-    const longUrl: string = "https://www.dadamugamazino.com";
+    const longUrl: string = "https://www.google.com";
     const response: ExecutionResult = await generateShortUrl(longUrl);
 
-    const expectedResponse: ExecutionResult = {
-      data: {
-        url: {
-          longUrl,
-        },
-      },
-    };
-
     const shortUrl: string = response.data?.generateShortUrl.shortUrl;
-    const shortUuid: string = shortUrl.split(
-      `${process.env.SHORTENER_DOMAIN}/`
-    )[1];
+    const shortUuid: string = shortUrl.replace(
+      `${process.env.SHORTENER_DOMAIN}/`,
+      ""
+    );
 
     const matchAlphaNumeric: RegExp = /[a-z0-9]*$/;
 
@@ -50,10 +44,13 @@ describe("UrlResolver", () => {
     expect(response.errors).toBeUndefined();
     expect(shortUuid).toHaveLength(8);
 
-    const databaseResult = await Url.findOne(expectedResponse.data?.url);
-    expect(databaseResult).toEqual(
-      expect.objectContaining(expectedResponse.data?.url)
-    );
+    const expectedDataEntry: DeepPartial<Url> = {
+      longUrl,
+      shortUrl,
+    };
+
+    const databaseResult = await Url.findOne(expectedDataEntry);
+    expect(databaseResult).toEqual(expect.objectContaining(expectedDataEntry));
   });
 
   it("retrieves all URLs", async () => {
@@ -63,24 +60,23 @@ describe("UrlResolver", () => {
       "https://primarybid.com/uk",
       "https://www.synthcity.io",
     ];
-    longUrls.forEach(async (longUrl) => await generateShortUrl(longUrl));
 
+    for (const longUrl of longUrls) {
+      await generateShortUrl(longUrl);
+    }
     // Retrieve all URLs
     const response: ExecutionResult = await fireGraphQLCall(getUrlsDocument);
     const expectedResponse: ExecutionResult = {
       data: {
-        url: [
+        urls: [
           {
-            shortUrl: `${process.env.SHORTENER_DOMAIN}/abcdwxyz`,
             longUrl: "https://www.dadamugamazino.com",
           },
           {
-            shortUrl: `${process.env.SHORTENER_DOMAIN}/asklaoqi`,
-            longUrl: "https://www.dadamugamazino.com",
+            longUrl: "https://primarybid.com/uk",
           },
           {
-            shortUrl: `${process.env.SHORTENER_DOMAIN}/alowiksj`,
-            longUrl: "https://www.dadamugamazino.com",
+            longUrl: "https://www.synthcity.io",
           },
         ],
       },
@@ -94,6 +90,6 @@ describe("UrlResolver", () => {
     const invalidURL: string = "this is not a real URL";
     const response: ExecutionResult = await generateShortUrl(invalidURL);
 
-    expect(response.errors).not.toBeNull();
+    expect(response.errors).toBeDefined();
   });
 });
