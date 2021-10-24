@@ -2,9 +2,9 @@ import React, { ReactElement, ReactNode } from "react";
 import { useQuery } from "@apollo/client";
 import { GetUrlsQueryDocument, Url } from "./graphql";
 
-import QueryHandler from "../../Components/QueryHandler";
-import Input from "../../Components/Input";
-import Button from "../../Components/Button";
+import QueryHandler from "../QueryHandler";
+import Input from "../Input";
+import Button from "../Button";
 
 const UrlList = (): ReactElement => {
   const { loading, error, data } = useQuery(GetUrlsQueryDocument);

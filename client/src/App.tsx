@@ -1,6 +1,6 @@
 import "./App.css";
 import Header from "./Components/Header";
-import UrlList from "./Widgets/UrlList";
+import UrlList from "./Components/UrlList";
 
 function App() {
   return (
