@@ -1,6 +1,7 @@
 {
   "name": "url-shortener-api",
   "version": "0.0.1",
+  "license": "MIT",
   "devDependencies": {
     "@types/express": "^4.17.2",
     "@types/jest": "^27.0.2",

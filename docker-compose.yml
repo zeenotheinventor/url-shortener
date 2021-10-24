@@ -1,0 +1,51 @@
+version: "3.7"
+
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_volume:/data/db
+
+  client:
+    container_name: url-shortener-client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - client_volume:/node/app
+    ports:
+      - 3000:3000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_GRAPHQL_URL=http://localhost:4000/graphql
+    depends_on:
+      - api
+      - mongodb
+    links:
+      - api
+
+  api:
+    container_name: url-shortener-api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+      - api_volume:/node/app
+    ports:
+      - 4000:4000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - DB_HOST=mongodb
+      - SHORTENER_DOMAIN=https://pbid.io
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodb_volume:
+  client_volume:
+  api_volume:

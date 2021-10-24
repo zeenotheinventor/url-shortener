@@ -2,7 +2,7 @@ module.exports = [
   {
     name: "development",
     type: "mongodb",
-    host: "localhost",
+    host: process.env.DB_HOST,
     port: 27017,
     database: "url-shortener",
     synchronize: true,
