@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, RenderResult } from "@testing-library/react";
 import UrlList from ".";
 import { Url } from "./graphql";
 import { MockedProvider } from "@apollo/client/testing";
@@ -23,7 +23,7 @@ describe("UrlList", () => {
   });
 
   it("renders the list or URLs", () => {
-    const { container } = subject();
+    const { container }: RenderResult = subject();
 
     const testUrls: Url[] = [
       {

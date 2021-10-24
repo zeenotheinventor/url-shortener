@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, render } from "@testing-library/react";
+import { fireEvent, render, RenderResult } from "@testing-library/react";
 import Button from ".";
 
 const subject = (overrideProps = {}) => {
@@ -8,7 +8,7 @@ const subject = (overrideProps = {}) => {
 
 describe("Button", () => {
   it("renders the children", () => {
-    const { queryByText } = subject();
+    const { queryByText }: RenderResult = subject();
 
     expect(queryByText("Button Text")).not.toBeNull();
   });
@@ -16,7 +16,7 @@ describe("Button", () => {
   it("triggers onclick callback when clicked", () => {
     const onClick = jest.fn();
 
-    const { getByTestId } = subject({ onClick });
+    const { getByTestId }: RenderResult = subject({ onClick });
     const button = getByTestId("button");
 
     fireEvent.click(button);

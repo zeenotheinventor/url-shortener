@@ -3,6 +3,8 @@ import { useQuery } from "@apollo/client";
 import { GetUrlsQueryDocument, Url } from "./graphql";
 
 import QueryHandler from "../../Components/QueryHandler";
+import Input from "../../Components/Input";
+import Button from "../../Components/Button";
 
 const UrlList = (): ReactElement => {
   const { loading, error, data } = useQuery(GetUrlsQueryDocument);
@@ -17,23 +19,26 @@ const UrlList = (): ReactElement => {
   };
 
   return (
-    <QueryHandler data={data?.urls} error={!!error} loading={loading}>
-      {(urls: Url[]): ReactElement => {
-        return (
-          <table>
-            <thead>
-              <tr>
-                <th>Index</th>
-                <th>Long URL</th>
-                <th>Short URL</th>
-              </tr>
-            </thead>
+    <>
+      <Input /> <Button>Atomify!</Button>
+      <QueryHandler data={data?.urls} error={!!error} loading={loading}>
+        {(urls: Url[]): ReactElement => {
+          return (
+            <table>
+              <thead>
+                <tr>
+                  <th>Index</th>
+                  <th>Long URL</th>
+                  <th>Short URL</th>
+                </tr>
+              </thead>
 
-            <tbody>{urls.map(renderUrl)}</tbody>
-          </table>
-        );
-      }}
-    </QueryHandler>
+              <tbody>{urls.map(renderUrl)}</tbody>
+            </table>
+          );
+        }}
+      </QueryHandler>
+    </>
   );
 };
 
