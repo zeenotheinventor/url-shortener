@@ -1,5 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
+import UrlList from "./Widgets/UrlList";
 
 function App() {
   return (
@@ -7,6 +8,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <span className="App-title">Atomizer</span>
+        <UrlList />
       </header>
     </div>
   );
