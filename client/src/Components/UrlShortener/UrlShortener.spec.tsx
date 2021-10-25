@@ -1,19 +1,19 @@
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
 import { render, RenderResult } from "@testing-library/react";
-import UrlList from ".";
+import UrlShotener from ".";
 import { Url } from "./graphql";
 import { MockedProvider } from "@apollo/client/testing";
 
 const subject = () => {
   return render(
     <MockedProvider mocks={[]} addTypename={false}>
-      <UrlList />
+      <UrlShotener />
     </MockedProvider>
   );
 };
 
-describe("UrlList", () => {
+describe("UrlShotener", () => {
   it("renders the table headers", () => {
     const { container } = subject();
 

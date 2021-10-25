@@ -1,9 +1,14 @@
 import React, { ReactElement, ReactNode } from "react";
-import { useQuery } from "@apollo/client";
-import { GetUrlsQueryDocument, Url } from "./graphql";
+import { useQuery, useMutation } from "@apollo/client";
+import {
+  GenerateShortUrlMutationDocument,
+  GetUrlsQueryDocument,
+  Url,
+} from "./graphql";
 
 import QueryHandler from "../QueryHandler";
-import ShortenUrlForm from "./UrlInputFormComponent";
+import UrlShotenerForm from "./UrlShortenerForm";
+import { toast } from "react-toastify";
 
 const UrlList = (): ReactElement => {
   const { loading, error, data, refetch } = useQuery(GetUrlsQueryDocument);
@@ -17,9 +22,29 @@ const UrlList = (): ReactElement => {
     );
   };
 
+  const [generateShortUrl] = useMutation(GenerateShortUrlMutationDocument);
+
+  const submitShortenerForm = async (longUrl: string): Promise<void> => {
+    try {
+      await generateShortUrl({
+        variables: {
+          input: {
+            longUrl,
+          },
+        },
+      });
+      toast.success("Success!");
+      refetch();
+    } catch (e: any) {
+      toast.error(
+        "Invalid input. Please ensure URL is in format 'http://url.domain'"
+      );
+    }
+  };
+
   return (
     <>
-      <ShortenUrlForm onSubmit={refetch} />
+      <UrlShotenerForm onSubmit={submitShortenerForm} />
       <QueryHandler data={data?.urls} error={!!error} loading={loading}>
         {(urls: Url[]): ReactElement => {
           return (
