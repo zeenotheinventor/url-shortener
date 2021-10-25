@@ -1,14 +1,15 @@
 import React, { ReactElement } from "react";
 import Button from "../../Button";
 import Input from "../../Input";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import type { UrlShortenerFormValues } from "./types";
+import css from "./UrlShortenerForm.module.css";
 
 interface Props {
   onSubmit: (longUrl: string) => void;
 }
 
-const ShortenUrlForm = ({ onSubmit }: Props): ReactElement => {
+const UrlShortenerForm = ({ onSubmit }: Props): ReactElement => {
   const initialValues: UrlShortenerFormValues = { longUrl: "" };
   const handleClick = ({ longUrl }: UrlShortenerFormValues): void => {
     onSubmit(longUrl);
@@ -16,24 +17,26 @@ const ShortenUrlForm = ({ onSubmit }: Props): ReactElement => {
 
   const styles = {
     form: { display: "flex" },
+    marginBottom: "20px",
+    marginTop: "20px",
   };
 
   return (
-    <div style={styles.form}>
-      <Formik initialValues={initialValues} onSubmit={handleClick}>
-        {({ values, handleChange, handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
+    <Formik initialValues={initialValues} onSubmit={handleClick}>
+      {({ values, handleChange, handleSubmit }) => (
+        <Form onSubmit={handleSubmit}>
+          <div style={styles.form}>
             <Input
               name="longUrl"
               value={values.longUrl}
               onChange={handleChange}
             />
             <Button type="submit">Atomify!</Button>
-          </form>
-        )}
-      </Formik>
-    </div>
+          </div>
+        </Form>
+      )}
+    </Formik>
   );
 };
 
-export default ShortenUrlForm;
+export default UrlShortenerForm;

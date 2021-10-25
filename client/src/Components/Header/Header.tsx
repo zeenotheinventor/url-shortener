@@ -1,12 +1,13 @@
 import { ReactElement } from "react";
 import logo from "../../logo.svg";
+import styles from "./Header.module.css";
 
 const Header = (): ReactElement => {
   return (
-    <>
-      <img src={logo} className="App-logo" alt="logo" />
-      <span className="App-title">Atomizer</span>
-    </>
+    <div className={styles.container}>
+      <img src={logo} className={styles.logo} alt="logo" />
+      <span className={styles.title}>Atomizer</span>
+    </div>
   );
 };
 

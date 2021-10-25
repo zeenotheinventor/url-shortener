@@ -10,7 +10,7 @@ import QueryHandler from "../QueryHandler";
 import UrlShotenerForm from "./UrlShortenerForm";
 import { toast } from "react-toastify";
 
-const UrlList = (): ReactElement => {
+const UrlShortener = (): ReactElement => {
   const { loading, error, data, refetch } = useQuery(GetUrlsQueryDocument);
   const renderUrl = ({ longUrl, shortUrl }: Url, id: number): ReactNode => {
     return (
@@ -66,4 +66,4 @@ const UrlList = (): ReactElement => {
   );
 };
 
-export default UrlList;
+export default UrlShortener;
