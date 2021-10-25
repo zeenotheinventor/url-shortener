@@ -30,6 +30,7 @@ const UrlShortenerForm = ({ onSubmit }: Props): ReactElement => {
               data-testid="url-field"
               name="longUrl"
               value={values.longUrl}
+              placeholder="enter url starting with https://"
               onChange={handleChange}
             />
             <Button type="submit" data-testid="atomify-button">
