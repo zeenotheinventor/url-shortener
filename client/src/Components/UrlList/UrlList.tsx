@@ -3,11 +3,10 @@ import { useQuery } from "@apollo/client";
 import { GetUrlsQueryDocument, Url } from "./graphql";
 
 import QueryHandler from "../QueryHandler";
-import Input from "../Input";
-import Button from "../Button";
+import ShortenUrlForm from "./UrlInputFormComponent";
 
 const UrlList = (): ReactElement => {
-  const { loading, error, data } = useQuery(GetUrlsQueryDocument);
+  const { loading, error, data, refetch } = useQuery(GetUrlsQueryDocument);
   const renderUrl = ({ longUrl, shortUrl }: Url, id: number): ReactNode => {
     return (
       <tr key={id}>
@@ -20,7 +19,7 @@ const UrlList = (): ReactElement => {
 
   return (
     <>
-      <Input /> <Button>Atomify!</Button>
+      <ShortenUrlForm onSubmit={refetch} />
       <QueryHandler data={data?.urls} error={!!error} loading={loading}>
         {(urls: Url[]): ReactElement => {
           return (

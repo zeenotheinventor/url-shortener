@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react";
+import styles from "./Input.module.css";
 
 interface Props {
   className?: string;
@@ -6,7 +7,9 @@ interface Props {
 }
 
 const Input = ({ ...rest }: Props): ReactElement => {
-  return <input data-testid="input" type="text" {...rest} />;
+  return (
+    <input data-testid="input" className={styles.input} type="text" {...rest} />
+  );
 };
 
 export default Input;
