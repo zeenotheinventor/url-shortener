@@ -1,14 +1,11 @@
 import React, { ReactElement, ReactNode } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import {
-  GenerateShortUrlMutationDocument,
-  GetUrlsQueryDocument,
-  Url,
-} from "./graphql";
+import { GenerateShortUrlMutationDocument, GetUrlsQueryDocument, Url } from "./graphql";
 
 import QueryHandler from "../QueryHandler";
-import UrlShotenerForm from "./UrlShortenerForm";
+import UrlShortenerForm from "./UrlShortenerForm";
 import { toast } from "react-toastify";
+import styles from "./UrlShortener.module.css";
 
 const UrlShortener = (): ReactElement => {
   const { loading, error, data, refetch } = useQuery(GetUrlsQueryDocument);
@@ -36,19 +33,17 @@ const UrlShortener = (): ReactElement => {
       toast.success("Success!");
       refetch();
     } catch (e: any) {
-      toast.error(
-        "Invalid input. Please ensure URL is in format 'http://url.domain'"
-      );
+      toast.error("Invalid input. Please ensure URL is in format 'http://url.domain'");
     }
   };
 
   return (
     <>
-      <UrlShotenerForm onSubmit={submitShortenerForm} />
+      <UrlShortenerForm onSubmit={submitShortenerForm} />
       <QueryHandler data={data?.urls} error={!!error} loading={loading}>
         {(urls: Url[]): ReactElement => {
           return (
-            <table>
+            <table className={styles.table}>
               <thead>
                 <tr>
                   <th>Index</th>
