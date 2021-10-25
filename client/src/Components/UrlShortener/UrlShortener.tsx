@@ -47,7 +47,7 @@ const UrlShortener = (): ReactElement => {
               <thead>
                 <tr>
                   <th>Index</th>
-                  <th>Long URL</th>
+                  <th className={styles.longUrlCol}>Long URL</th>
                   <th>Short URL</th>
                 </tr>
               </thead>
