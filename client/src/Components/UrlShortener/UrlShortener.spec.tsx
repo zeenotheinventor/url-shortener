@@ -1,28 +1,35 @@
 import "@testing-library/jest-dom/extend-expect";
+import "regenerator-runtime/runtime";
 import React from "react";
-import { render, RenderResult } from "@testing-library/react";
+import { render, RenderResult, waitFor } from "@testing-library/react";
 import UrlShotener from ".";
 import { Url } from "./graphql";
 import { MockedProvider } from "@apollo/client/testing";
+import { mockGetUrlsQuery } from "./graphql/mocks/getUrlsQuery.mock";
+import UrlShortenerForm from "./UrlShortenerForm";
+
+jest.mock("./UrlShortenerForm", () => jest.fn(() => "UrlShortenerForm"));
 
 const subject = () => {
   return render(
-    <MockedProvider mocks={[]} addTypename={false}>
+    <MockedProvider mocks={[mockGetUrlsQuery()]} addTypename={false}>
       <UrlShotener />
     </MockedProvider>
   );
 };
 
 describe("UrlShotener", () => {
-  it("renders the table headers", () => {
+  it("renders the table headers", async () => {
     const { container } = subject();
 
-    expect(container).toHaveTextContent("Index");
-    expect(container).toHaveTextContent("Short URL");
-    expect(container).toHaveTextContent("Long URL");
+    await waitFor(() => {
+      expect(container).toHaveTextContent("Index");
+      expect(container).toHaveTextContent("Short URL");
+      expect(container).toHaveTextContent("Long URL");
+    });
   });
 
-  it("renders the list or URLs", () => {
+  it("renders the list of URLs from API", async () => {
     const { container }: RenderResult = subject();
 
     const testUrls: Url[] = [
@@ -40,11 +47,24 @@ describe("UrlShotener", () => {
       },
     ];
 
-    const checkUrlRenders = ({ longUrl, shortUrl }: Url): void => {
-      expect(container).toHaveTextContent(longUrl);
-      expect(container).toHaveTextContent(shortUrl);
+    const checkUrlRenders = async ({
+      longUrl,
+      shortUrl,
+    }: Url): Promise<void> => {
+      await waitFor(() => {
+        expect(container).toHaveTextContent(longUrl);
+        expect(container).toHaveTextContent(shortUrl);
+      });
     };
 
     testUrls.map(checkUrlRenders);
+  });
+
+  it("renders URLShortenerForm", async () => {
+    subject();
+
+    await waitFor(() => {
+      expect(UrlShortenerForm).toBeCalled();
+    });
   });
 });
