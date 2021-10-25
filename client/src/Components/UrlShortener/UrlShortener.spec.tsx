@@ -6,19 +6,15 @@ import UrlShortener from ".";
 import { Url } from "./graphql";
 import { MockedProvider } from "@apollo/client/testing";
 import { mockGetUrlsQuery } from "./graphql/mocks/getUrlsQuery.mock";
-import UrlShortenerForm from "./UrlShortenerForm";
-
-jest.mock("./UrlShortenerForm", () => jest.fn(() => "UrlShortenerForm"));
-
-const subject = () => {
-  return render(
-    <MockedProvider mocks={[mockGetUrlsQuery()]} addTypename={false}>
-      <UrlShortener />
-    </MockedProvider>
-  );
-};
 
 describe("UrlShotener", () => {
+  const subject = () => {
+    return render(
+      <MockedProvider mocks={[mockGetUrlsQuery()]} addTypename={false}>
+        <UrlShortener />
+      </MockedProvider>
+    );
+  };
   it("renders the table headers", async () => {
     const { container } = subject();
 
@@ -58,13 +54,5 @@ describe("UrlShotener", () => {
     };
 
     testUrls.map(checkUrlRenders);
-  });
-
-  it("renders URLShortenerForm", async () => {
-    subject();
-
-    await waitFor(() => {
-      expect(UrlShortenerForm).toBeCalled();
-    });
   });
 });
