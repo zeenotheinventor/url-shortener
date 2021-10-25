@@ -1,6 +1,6 @@
 input[type="text"],
 select {
-  width: 100%;
+  width: 500px;
   padding: 12px 20px;
   margin: 0px 20px;
   display: inline-block;
