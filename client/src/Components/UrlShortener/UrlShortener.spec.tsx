@@ -2,7 +2,7 @@ import "@testing-library/jest-dom/extend-expect";
 import "regenerator-runtime/runtime";
 import React from "react";
 import { render, RenderResult, waitFor } from "@testing-library/react";
-import UrlShotener from ".";
+import UrlShortener from ".";
 import { Url } from "./graphql";
 import { MockedProvider } from "@apollo/client/testing";
 import { mockGetUrlsQuery } from "./graphql/mocks/getUrlsQuery.mock";
@@ -13,7 +13,7 @@ jest.mock("./UrlShortenerForm", () => jest.fn(() => "UrlShortenerForm"));
 const subject = () => {
   return render(
     <MockedProvider mocks={[mockGetUrlsQuery()]} addTypename={false}>
-      <UrlShotener />
+      <UrlShortener />
     </MockedProvider>
   );
 };

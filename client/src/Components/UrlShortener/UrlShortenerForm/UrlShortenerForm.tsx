@@ -27,11 +27,14 @@ const UrlShortenerForm = ({ onSubmit }: Props): ReactElement => {
         <Form onSubmit={handleSubmit}>
           <div style={styles.form}>
             <Input
+              data-testid="url-field"
               name="longUrl"
               value={values.longUrl}
               onChange={handleChange}
             />
-            <Button type="submit">Atomify!</Button>
+            <Button type="submit" data-testid="atomify-button">
+              Atomify!
+            </Button>
           </div>
         </Form>
       )}
