@@ -3,7 +3,6 @@ import Button from "../../Button";
 import Input from "../../Input";
 import { Formik, Form } from "formik";
 import type { UrlShortenerFormValues } from "./types";
-import css from "./UrlShortenerForm.module.css";
 
 interface Props {
   onSubmit: (longUrl: string) => void;
@@ -17,8 +16,6 @@ const UrlShortenerForm = ({ onSubmit }: Props): ReactElement => {
 
   const styles = {
     form: { display: "flex" },
-    marginBottom: "20px",
-    marginTop: "20px",
   };
 
   return (
